@@ -34,7 +34,7 @@ void HashTable::addElement (int key){
       position = (position + 1) % capacity;
     }
     size++;
-    hashArray[position] = key;
+    hashArray[position] = 1;
   }
 }
 
@@ -46,7 +46,7 @@ int HashTable::member (int key){
     if (data == -1){
       return -1;
     }
-    if (data == key){
+    if (data == 1){
       return 1;
     }
     
@@ -57,7 +57,7 @@ int HashTable::member (int key){
 void HashTable::removeElement (int key){
   if (size > 0){
     int position = Hash(key);
-    if (member(key) == 1){
+    if (hashArray[position] == 1){
       hashArray[position] = -1;
       size--;
     }
@@ -72,7 +72,8 @@ void HashTable::printHashTable (){
   if (size > 0){
     for (int i = 0; i < capacity; i++){
       if (hashArray[i] != -1){
-        cout << hashArray[i] << " ";
+        //int position = Hash(i);
+        cout << i << " ";
       }
     }
     cout << endl;
