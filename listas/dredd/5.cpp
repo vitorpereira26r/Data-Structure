@@ -39,6 +39,9 @@ class lista {
     void removeFim ();
     void removeInicio ();
     void inverte ();
+    unsigned getMatricula ();
+    string getNome ();
+    unsigned getPeriodo ();
 };
 
 // construtor de lista vazia
@@ -130,9 +133,9 @@ void lista::imprime(){
   }
 
   cout << "]" << endl;
-  cout << tamanho << endl;
-  cout << ultimo -> nome << endl;
-  cout << primeiro -> proximo << endl;
+  //cout << tamanho << endl;
+  //cout << ultimo -> nome << endl;
+  //cout << primeiro -> proximo << endl;
 }
 
 inline bool lista::vazia(){
@@ -176,29 +179,21 @@ void lista::removeInicio () {
 }
 
 void lista::inverte (){
-  noh* aux1 = primeiro;
-  noh* aux2 = ultimo;
-  int contBaixo = 1;
-  int contCima = tamanho;
-  cout << aux1 -> proximo << endl;
+  
+  
+  for (int i = 0; i < tamanho / 2; i++){}
+}
 
-  while (contBaixo <= contCima){
-    if (contBaixo == 1){
-      primeiro = aux2;
-      ultimo = aux1;
-      primeiro -> anterior = NULL;
-      ultimo -> proximo = NULL;
-      primeiro -> proximo = aux1 -> proximo;
-      ultimo -> anterior =  aux2 -> anterior;
-    } else {
-      noh* temp = aux1;
-    }
-    aux1 = aux1 -> proximo;
-    aux2 = aux2 -> anterior;
-    contBaixo++;
-    contCima--;
-    if (contCima == contBaixo){}
-  }
+unsigned lista::getMatricula () {
+  return ultimo -> matricula;
+}
+
+string lista::getNome () {
+  return ultimo -> nome;
+}
+
+unsigned lista::getPeriodo () {
+  return ultimo -> periodo;
 }
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
