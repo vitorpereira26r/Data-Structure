@@ -1,0 +1,109 @@
+Questão 3: Hash com Vetor de Quatro Posições (v2)
+Nota: 100.0
+A implementação de Hash com encadeamento é uma das mais utilizadas. Para o encadeamento, a implementação tradicional faz uso de uma lista encadeada. Entretanto, várias implementações utilizam estruturas diferenciadas para o encadeamento das colisões. Por exemplo, a classe HashMap no Java 8 utiliza uma árvore binária para essa tarefa.
+
+Implemente uma tabela hash com um número genérico n de posições, informado durante a construção da tabela, com resolução de colisões utilizando um vetor de quatro posições. Inclusive, o primeiro elemento na posição deverá ser armazenado também nesse vetor, na posição 0. Utilize como hash a função h(k) = k mod n, em que k, um inteiro positivo, é a chave do registro sendo armazenado e n é o número de posições da tabela. Não é necessário implementar métodos para alteração ou remoção de dados, apenas inserção e recuperação. Chaves não utilizadas devem ser mantidas como -1, tendo a string vazia como valor associado.
+
+Entradas:
+
+Tamanho da tabela hash
+Quantidade de dados a serem inseridos na tabela hash
+Conjunto de dados a serem inseridos, cada um possuindo uma chave e uma palavra (como valor)
+Quatro chaves para recuperação
+
+Saídas:
+
+Texto "ITEM JÁ ESTÁ NA TABELA!" quando da tentativa de inserção de novo elemento com uma chave já existente
+Texto "NÚMERO MÁXIMO DE COLISÕES PARA CHAVE!" quando da tentativa de inserção de um quinto elemento na mesma posição do hash
+Valores recuperados ou o texto "NÃO ENCONTRADO!"
+Impressão da estrutura da tabela hash, como exemplificado a seguir
+
+Exemplo de Entrada:
+
+5
+5
+5 primeiro
+10 segundo
+15 terceiro
+20 quarto
+25 ih  
+3
+2
+5
+15
+
+Exemplo de Saída:
+
+NÚMERO MÁXIMO DE COLISÕES PARA CHAVE!
+NÃO ENCONTRADO!
+NÃO ENCONTRADO!
+primeiro
+terceiro
+0:[5/primeiro][10/segundo][15/terceiro][20/quarto]
+1:[-1/][-1/][-1/][-1/]
+2:[-1/][-1/][-1/][-1/]
+3:[-1/][-1/][-1/][-1/]
+4:[-1/][-1/][-1/][-1/]
+
+Exemplo de Entrada:
+
+5
+10
+5 primeiro
+10 segundo
+15 terceiro
+20 quarto
+6 xxxx
+7 yyyy
+11 aaaa
+12 bbbb
+16 aleluia
+13 perae  
+3
+13
+5
+15
+
+Exemplo de Saída:
+
+NÃO ENCONTRADO!
+perae
+primeiro
+terceiro
+0:[5/primeiro][10/segundo][15/terceiro][20/quarto]
+1:[6/xxxx][11/aaaa][16/aleluia][-1/]
+2:[7/yyyy][12/bbbb][-1/][-1/]
+3:[13/perae][-1/][-1/][-1/]
+4:[-1/][-1/][-1/][-1/]
+
+Exemplo de Entrada:
+
+5
+9
+5 primeiro
+10 segundo
+15 terceiro
+20 quarto
+6 xxxx
+15 111
+20 300
+301 301
+399 309
+111
+15
+1511
+20
+
+Exemplo de Saída:
+
+ITEM JÁ ESTÁ NA TABELA!
+ITEM JÁ ESTÁ NA TABELA!
+NÃO ENCONTRADO!
+terceiro
+NÃO ENCONTRADO!
+quarto
+0:[5/primeiro][10/segundo][15/terceiro][20/quarto]
+1:[6/xxxx][301/301][-1/][-1/]
+2:[-1/][-1/][-1/][-1/]
+3:[-1/][-1/][-1/][-1/]
+4:[399/309][-1/][-1/][-1/]

@@ -26,15 +26,15 @@ class Node{
     }
     void addToArray(string value, int key){
       bool aloc = false;
-      for (int i = 0; i < 4; i++){
+      for(int i = 0; i < 4; i++){
+        if (key == arrayKey[i]){
+          cout << "ITEM JÁ ESTÁ NA TABELA" << endl;
+          aloc = true;
+        }
         if (arrayKey[i] == -1 and aloc == false){
-		  if(arrayKey[i] == key){
-			  cout << "ITEM JÁ EXISTENTE" << endl;
-		  } else {
-            aloc = true;
-            arrayKey[i] = key;
-            arrayValue[i] = value;
-	      }
+          arrayKey[i] = key;
+          arrayValue[i] = value;
+          aloc = true;
         }
       }
       if (aloc == false){
