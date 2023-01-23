@@ -114,3 +114,5 @@ int main () {
 int Hash (int key){
   return key % 101;
 }
+
+// 89 98 100 78 67 108 12 23 9 87

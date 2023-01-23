@@ -1,0 +1,137 @@
+Questão 4: Hash - Redimensionamento
+Nota:
+O objetivo das tabelas hash de ser uma estrutura de dados com tempo de acesso constante aos elementos é prejudicado pela existência de colisões. Quanto mais colisão houver, mais custoso é o acesso a alguns elementos da tabela. Uma forma de mitigar esse problema é expandir o espaço de endereços da tabela sempre que houver muitos valores num mesmo endereço. No caso em que há encadeamento de valores, a expansão pode ser feita recalculando a posição de cada valor e movendo o nó (chave/valor) para um novo encadeamento.
+
+Implemente uma tabela hash com tratamento de colisão por encadeamento - novos elementos devem ser inseridos no fim da lista. A função para cálculo da posição em que um elemento deve ser inserido é chave % capacidade e a operação de redimensionamento deve ser realizada quando a inserção de um elemento fizer com que 70% das posições da tabela sejam ocupadas. A capacidade da tabela deve ser dobrada a cada redimensionamento.
+
+As funcionalidades disponíveis são:
+
+I - Inserir item na tabela
+R - Remover item - caso seja solicitada a exclusão de um item inexistente, o programa deve exibir a mensagem "ERRO".
+B - Buscar item
+P - Imprimir tabela
+S - Sair
+Entradas:
+
+Capacidade da tabela
+Funcionalidades a serem executadas.
+
+Saídas:
+
+Resposta das funcionalidades selecionadas.
+
+Exemplo de Entrada:
+
+10
+I 32 TRINTADOIS
+I 23 VINTETRES
+I 2 DOIS
+I 21 VINTEUM
+P
+I 14 QUATORZE
+I 69 SESSENTANOVE
+I 42 QUARENTADOIS
+I 11 ONZE
+I 51 CIQUENTAUM
+P
+I 13 TREZE
+I 7 SETE
+I 88 OITENTAOITO
+P
+S
+
+Exemplo de Saída:
+
+Posicao 0:
+Posicao 1: 21 VINTEUM
+Posicao 2: 32 TRINTADOIS
+Lista de colisao: 2 DOIS
+Posicao 3: 23 VINTETRES
+Posicao 4: 
+Posicao 5:
+Posicao 6:
+Posicao 7: 
+Posicao 8: 
+Posicao 9:
+-----------------------
+Posicao 0:
+Posicao 1: 21 VINTEUM
+Lista de Colisao: 11 ONZE, 51 CINQUENTAUM
+Posicao 2: 32 TRINTADOIS
+Lista de colisao: 2 DOIS, 42 QUARENTADOIS
+Posicao 3: 23 VINTETRES
+Posicao 4: 14 QUATORZE
+Posicao 5:
+Posicao 6:
+Posicao 7: 
+Posicao 8: 
+Posicao 9: 69 SESSENTANOVE
+-----------------------
+Posicao 0:
+Posicao 1: 21 VINTEUM
+Lista de Colisao: 11 ONZE, 51 CINQUENTAUM
+Posicao 2: 32 TRINTADOIS
+Lista de colisao: 2 DOIS, 42 QUARENTADOIS
+Posicao 3: 23 VINTETRES
+Lista de colisao: 13 TREZE
+Posicao 4: 14 QUATORZE
+Posicao 5:
+Posicao 6:
+Posicao 7: 7 SETE
+Posicao 8: 88 OITENTAOITO
+Posicao 9: 69 SESSENTANOVE
+Posicao 10:
+Posicao 11: 
+Posicao 12: 32 TRINTADOIS
+Posicao 13: 13 TREZE
+Posicao 14: 14 QUATORZE
+Posicao 15:
+Posicao 16:
+Posicao 17: 
+Posicao 18: 
+Posicao 19:
+-----------------------
+
+Exemplo de Entrada:
+
+10
+I 10 DEZ
+I 2 DOIS
+I 22 VINTEDOIS
+I 15 QUINZE
+I 32 TRINTADOIS
+R 25
+P
+I 18 DEZOITO
+I 9 NOVE
+R 32
+P
+S
+
+Exemplo de Saída:
+
+ERRO
+Posicao 0: 10 DEZ
+Posicao 1: 
+Posicao 2: 2 DOIS
+Lista de colisao: 22 VINTEDOIS, 32 TRINTADOIS
+Posicao 3: 
+Posicao 4: 
+Posicao 5: 15 QUINZE
+Posicao 6:
+Posicao 7: 
+Posicao 8: 
+Posicao 9:
+-----------------------
+Posicao 0: 10 DEZ
+Posicao 1: 
+Posicao 2: 2 DOIS
+Lista de colisao: 22 VINTEDOIS
+Posicao 3: 
+Posicao 4: 
+Posicao 5: 15 QUINZE
+Posicao 6:
+Posicao 7: 
+Posicao 8: 18 DEZOITO
+Posicao 9: 9 NOVE
+-----------------------

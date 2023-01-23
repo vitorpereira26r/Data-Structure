@@ -22,7 +22,7 @@ class hashTable{
   private:
     Node* dataMap[SIZE];
   public:
-    void printTable();
+    //void printTable();
     void set (string key, string meaning);
     string get (string key);
 };
@@ -31,7 +31,7 @@ int main (){
   int numberOfWords;
   string word;
   char meaning[255];
-  char space [1];
+  //char space [1];
   hashTable* myHashTable = new hashTable();
 
   cin >> numberOfWords;
@@ -49,9 +49,9 @@ int main (){
     if (choice != "-1"){
       string aux = myHashTable -> get(choice);
       if (aux == "0"){
-        cout << "NULL" << endl;
+        cout << "[" << choice << "] => " << "NULL" << endl;
       } else {
-        cout << "[" << choice << "] => " << aux << endl;
+        cout << "[" << choice << "] =>" << aux << endl;
       }
     }
   } while (choice != "-1");
@@ -66,7 +66,7 @@ int Hash (string key) {
   hash = key.length() % SIZE;
   return hash;
 }
-
+/*
 void hashTable::printTable (){
   for (int i = 0; i < SIZE; i++){
     if (dataMap[i]){
@@ -78,7 +78,7 @@ void hashTable::printTable (){
       }
     }
   }
-}
+}*/
 
 void hashTable::set (string key, string meaning){
   int index = Hash(key);
