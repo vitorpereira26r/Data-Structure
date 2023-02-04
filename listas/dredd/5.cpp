@@ -38,7 +38,7 @@ class lista {
     inline bool vazia ();
     void removeFim ();
     void removeInicio ();
-    void inverte ();
+    bool inverte ();
     unsigned getMatricula ();
     string getNome ();
     unsigned getPeriodo ();
@@ -178,10 +178,16 @@ void lista::removeInicio () {
   tamanho--;
 }
 
-void lista::inverte (){
-  
-  
-  for (int i = 0; i < tamanho / 2; i++){}
+bool lista::inverte (){
+  noh* aux1 = primeiro;
+  noh* aux2 = ultimo;
+  noh* troca;
+
+  while(true){
+    troca = aux1;
+    aux1 = aux2;
+    aux2 = troca;
+  }
 }
 
 unsigned lista::getMatricula () {
