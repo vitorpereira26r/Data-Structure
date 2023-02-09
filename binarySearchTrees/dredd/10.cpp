@@ -3,7 +3,7 @@
  * by Joukim, Outubro de 2020 - Estrutura de Dados (GCC216)
  * Caracteristicas de implementação outubro de 2020:
  * -> tratamento de exceção
- * -> usa dado na forma chave/valor '
+ * -> usa dado na forma chave/valor
  * -> uso de métodos recursivos
  * -> sem duplo encadeamento
  * -> invés de transplanta, usa removeMenor
@@ -17,18 +17,18 @@ using namespace std;
 
 struct dado {
     unsigned chave;
-    string nomeAnimal;
-    string especie;
-    string raca;
+    string modelo;
+    string marca;
+    short anoFabricacao;
 };
 
 ostream& operator<<(ostream& saida, const dado& e) {
-    saida << "(" << e.chave << "," << e.nomeAnimal << "," << e.especie << "," << e.raca << ")";
+    saida << "(" << e.chave << "," << e.modelo << "," << e.marca << "," << e.anoFabricacao << ")";
     return saida;
 }
 
 istream& operator>>(istream& entrada, dado& e) {
-    entrada >> e.chave >> e.nomeAnimal >> e.especie >> e.raca;
+    entrada >> e.chave >> e.modelo >> e.marca >> e.anoFabricacao;
     return entrada;
 }
 
@@ -47,16 +47,41 @@ class noh {
         ~noh() { }
         int fatorBalanceamento();
         void atualizarAltura();
+        unsigned informarAltura();
 };
 
 int noh::fatorBalanceamento() {
-  return (esq->altura - dir->altura);
+  unsigned alturaArvoreEsq, alturaArvoreDir;
+  if(esq){
+    alturaArvoreEsq = esq->informarAltura();
+  } else {
+    alturaArvoreEsq = 0;
+  }
+  if(dir){
+    alturaArvoreDir = dir->informarAltura();
+  } else {
+    alturaArvoreDir = 0;
+  }
+  return alturaArvoreEsq - alturaArvoreDir;
 }
 
 void noh::atualizarAltura(){
-  int alturaEsq = (esq == nullptr) ? -1 : esq->altura;
-  int alturaDir = (dir == nullptr) ? -1 : dir->altura;
-  altura = 1 + max(alturaDir, alturaEsq);
+  unsigned alturaArvoreEsq, alturaArvoreDir;
+  if(esq){
+    alturaArvoreEsq = esq->informarAltura();
+  } else {
+    alturaArvoreEsq = 0;
+  }
+  if(dir){
+    alturaArvoreDir = dir->informarAltura();
+  } else {
+    alturaArvoreDir = 0;
+  }
+  altura = 1 + max(alturaArvoreDir, alturaArvoreEsq);
+}
+
+unsigned noh::informarAltura(){
+  return altura;
 }
 
 class avl {
@@ -82,7 +107,7 @@ class avl {
         void destruirRecursivamente(noh* umNoh);
         void imprimirDir(const std::string& prefixo, const noh* meuNoh);
         void imprimirEsq(const std::string& prefixo, const noh* meuNoh, bool temIrmao);
-        int levantamentoAux(noh* umNoh, string especie, string  raca);
+        int levantamentoAux(noh* umNoh, string marca, short ano);
     public:
         avl() { raiz = NULL; }
         ~avl();
@@ -93,28 +118,10 @@ class avl {
         // inserção e remoção, métodos recursivos
         // busca retorna uma cópia do objeto armazenado
         dado busca(tipoChave chave);
-        // efetua levantamento de quantos animais de uma espécie e raça
-        int levantamento(string especie, string raca);
+        // efetua levantamento de quantas motos existem de uma dada marca 
+        // fabricadas a partir de um dado ano
+        int levantamento(string marca, short ano);
 };
-
-int avl::levantamento(string especie, string raca){
-  return levantamentoAux(raiz, especie, raca);
-}
-
-int avl::levantamentoAux(noh* umNoh, string especie, string  raca){
-  int cont = 1;
-  if (umNoh == NULL){
-    return 0;
-  }
-
-  cont = levantamentoAux(umNoh->esq, especie, raca);
-  cont = levantamentoAux(umNoh->dir, especie, raca);
-
-  if(umNoh->elemento.especie == especie && umNoh->elemento.raca == raca){
-    cont++;
-  }
-  return cont;
-}
 
 // destrutor
 avl::~avl() {
@@ -131,6 +138,26 @@ void avl::destruirRecursivamente(noh* umNoh) {
   delete umNoh;
 }
 
+int avl::levantamento(string marca, short ano){
+  return levantamentoAux(raiz, marca, ano);
+}
+
+int avl::levantamentoAux(noh* umNoh, string marca, short ano){
+  int cont=0;
+  if (umNoh == NULL){
+    return 0;
+  }
+
+  cont += levantamentoAux(umNoh->esq, marca, ano);
+  cont += levantamentoAux(umNoh->dir, marca, ano);
+
+  if(umNoh->elemento.marca == marca && umNoh->elemento.anoFabricacao >= ano){
+    cont++;
+  }
+  //cont++;
+  return cont;
+}
+
 void avl::insere(const dado& umDado) {
     raiz = insereAux(raiz, umDado);
 }
@@ -144,8 +171,6 @@ noh* avl::insereAux(noh* umNoh, const dado& umDado) {
     umNoh->esq = insereAux(umNoh->esq, umDado);
   } else if(umDado.chave > umNoh->elemento.chave){
     umNoh->dir = insereAux(umNoh->dir, umDado);
-  } else {
-    return umNoh;
   }
   umNoh->atualizarAltura();
   return arrumaBalanceamento(umNoh);
@@ -154,18 +179,22 @@ noh* avl::insereAux(noh* umNoh, const dado& umDado) {
 // checa e arruma, se necessário, o balanceamento em umNoh,
 // fazendo as rotações e ajustes necessários
 noh* avl::arrumaBalanceamento(noh* umNoh) {
-  int fator = umNoh->fatorBalanceamento();
-  if(fator > 1 && umNoh->elemento.chave < umNoh->esq->elemento.chave){
+  if(umNoh == NULL){ return umNoh; }
+  int fatorBalanceamento = umNoh->fatorBalanceamento();
+  if(fatorBalanceamento >= 1 && fatorBalanceamento <= -1){
+    return umNoh;
+  }
+  if(fatorBalanceamento > 1 && umNoh->esq->fatorBalanceamento() >= 0){
     return rotacaoDireita(umNoh);
   }
-  if(fator < -1 && umNoh->elemento.chave > umNoh->dir->elemento.chave){
-    return rotacaoEsquerda(umNoh);
-  }
-  if(fator > 1 && umNoh->elemento.chave > umNoh->esq->elemento.chave){
+  if(fatorBalanceamento > 1 && umNoh->esq->fatorBalanceamento() < 0){
     umNoh->esq = rotacaoEsquerda(umNoh->esq);
     return rotacaoDireita(umNoh);
   }
-  if(fator < -1 && umNoh->elemento.chave < umNoh->dir->elemento.chave){
+  if(fatorBalanceamento < -1 && umNoh->dir->fatorBalanceamento() <= 0){
+    return rotacaoEsquerda(umNoh);
+  }
+  if(fatorBalanceamento < -1 && umNoh->dir->fatorBalanceamento() > 0){
     umNoh->dir = rotacaoDireita(umNoh->dir);
     return rotacaoEsquerda(umNoh);
   }
@@ -263,6 +292,7 @@ noh* avl::removeAux(noh* umNoh, tipoChave chave) {
         umNoh->dir = removeAux(umNoh->dir, sucessor->elemento.chave);
       }
     }
+    umNoh->atualizarAltura();
     return arrumaBalanceamento(umNoh);
 }
 
@@ -277,7 +307,6 @@ void avl::percorreEmOrdemAux(noh* atual, int nivel) {
 }
 
 ostream& operator<<(ostream& output, avl& arvore) {
-    // arvore.percorreEmOrdemAux(arvore.raiz,0);
     arvore.imprimir();
     return output;
 }
@@ -289,7 +318,7 @@ void avl::imprimirDir(const std::string& prefixo, const noh* meuNoh)
     {
         std::cout << prefixo
                   << "└d─"
-                  << "(" << meuNoh->elemento.chave << "," << meuNoh->elemento.nomeAnimal << ")"
+                  << "(" << meuNoh->elemento.chave << "," << meuNoh->elemento.modelo << ")"
                   << std::endl;
 
         // Repassa o prefixo para manter o historico de como deve ser a formatacao e chama no filho direito e esquerdo
@@ -311,7 +340,7 @@ void avl::imprimirEsq(const std::string& prefixo, const noh* meuNoh, bool temIrm
         else
             std::cout << "├e─";
 
-        std::cout << "(" << meuNoh->elemento.chave << "," << meuNoh->elemento.nomeAnimal << ")"
+        std::cout << "(" << meuNoh->elemento.chave << "," << meuNoh->elemento.modelo << ")"
                   << std::endl;
 
         // Repassa o prefixo para manter o historico de como deve ser a formatacao e chama no filho direito e esquerdo
@@ -325,7 +354,7 @@ void avl::imprimir()
 {
     if( this->raiz != nullptr )
     {
-        std::cout << "(" << this->raiz->elemento.chave << "," << this->raiz->elemento.nomeAnimal << ")" << std::endl;
+        std::cout << "(" << this->raiz->elemento.chave << "," << this->raiz->elemento.modelo << ")" << std::endl;
         // apos imprimir a raiz, chama os respectivos metodos de impressao nas subarvore esquerda e direita
         // a chamada para a impressao da subarvore esquerda depende da existencia da subarvore direita
         imprimirEsq( " " , this->raiz->esq, this->raiz->dir==nullptr );
@@ -335,45 +364,50 @@ void avl::imprimir()
 }
 
 int main() {
-  avl arvore;
-  tipoChave chave;
-  dado umDado;
-  string especie;
-  string raca;
-  int quantidade;
+    avl arvore;
+    tipoChave chave;
+    dado umDado;
+    string marcaParaBusca;
+    short anoParaBusca;
+    int quantidade;
 
-  char operacao;
+    char operacao;
 
-  do {
-    cin >> operacao;
-      switch (operacao) {
-        case 'i':
-          cin >> umDado;
-          arvore.insere(umDado);
-          break;
-        case 'r': // Remover recursivamente
-          cin >> chave;
-          arvore.remove(chave);
-          break;
-        case 'b': // Buscar
-          cin >> chave; // ler a chave
-          umDado = arvore.busca(chave); // escrever os dados do animal
-          cout << "Elemento buscado: " << umDado << endl;
-          break;
-        case 'l': // Levantamento por espécie e raça
-          cin >> especie >> raca; // ler os dados para levantamento
-          quantidade = arvore.levantamento(especie, raca);
-          cout << "Levantamento de animais: " << quantidade << endl;
-          break;
-        case 'e': // Escrever tudo (em ordem)
-          cout << arvore;
-          break;
-        case 'f': // Finalizar execução
-          break;
-        default:
-          cout << "Comando invalido!\n";
-      }
-  } while (operacao != 'f');
+    do {
+        try {
+            cin >> operacao;
+            switch (operacao) {
+                case 'i': // Inserir recursivamente
+                    // objeto recebe chave, modelo da motocicleta, marca, ano de fabricação
+                    cin >> umDado;
+                    arvore.insere(umDado);
+                    break;
+                case 'r': // Remover recursivamente
+                    cin >> chave;
+                    arvore.remove(chave);
+                    break;
+                case 'b': // Buscar
+                    cin >> chave; // ler a chave
+                    umDado = arvore.busca(chave); // escreve dados da motocicleta
+                    cout << "Elemento buscado: " << umDado << endl;
+                    break;
+                case 'l': // Levantamento por marca
+                    cin >> marcaParaBusca >> anoParaBusca; // ler a marca e ano
+                    quantidade = arvore.levantamento(marcaParaBusca,anoParaBusca);
+                    cout << "Levantamento da marca " << marcaParaBusca << ": " << quantidade << endl;
+                    break;
+                case 'e': // Escrever tudo (em ordem)
+                    cout << arvore;
+                    break;
+                case 'f': // Finalizar execução
+                    break;
+                default:
+                    cout << "Comando invalido!\n";
+            }
+        } catch (runtime_error& e) {
+            cout << e.what() << endl;
+        }
+    } while (operacao != 'f');
 
-  return 0;
+    return 0;
 }
