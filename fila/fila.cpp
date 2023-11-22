@@ -86,6 +86,22 @@ int fila::espia (){
 
 int main () {
 	fila f1;
+
+	cout<< "Enfileira: " << 1 << endl;
+	f1.enfileira(1);
+	cout<< "Enfileira: " << 5 << endl;
+	f1.enfileira(5);
+	cout<< "Enfileira: " << 8 << endl;
+	f1.enfileira(8);
+	cout<< "Enfileira: " << 2 << endl;
+	f1.enfileira(2);
+	cout<< "Enfileira: " << 4 << endl;
+	f1.enfileira(4);
+	cout << endl;
+	
+	while(!f1.vazia()){
+		cout << "Desenfileira: " << f1.desenfileira() << endl;
+	}
 	
 	return 0;
 }

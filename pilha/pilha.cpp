@@ -79,7 +79,9 @@ int main (){
 
 	do {
 		cin >> dado;
-		p1.empilha(dado);
+		if(dado != 'g'){
+			p1.empilha(dado);
+		}
 	}
 	while(dado != 'g');
 	
